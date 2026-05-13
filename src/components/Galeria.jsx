@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useI18n } from "../i18n.jsx";
 
 const gridTwo =
   "mt-8 grid max-w-5xl grid-cols-1 gap-6 sm:mt-10 sm:grid-cols-2 sm:gap-8 md:mt-12 md:gap-10 mx-auto w-full";
 
 export function Galeria({ items = [] }) {
+  const { t } = useI18n();
   const [open, setOpen] = useState(null);
   const close = useCallback(() => setOpen(null), []);
   const active = open != null && items[open] ? items[open] : null;
@@ -22,7 +24,7 @@ export function Galeria({ items = [] }) {
   useEffect(() => {
     if (open == null) return;
     prevFocus.current = document.activeElement;
-    const t = window.setTimeout(() => closeBtnRef.current?.focus(), 0);
+    const tmr = window.setTimeout(() => closeBtnRef.current?.focus(), 0);
     const trap = (e) => {
       if (e.key !== "Tab") return;
       const a = closeBtnRef.current;
@@ -44,16 +46,16 @@ export function Galeria({ items = [] }) {
     const el = overlayRef.current;
     el?.addEventListener("keydown", trap);
     return () => {
-      clearTimeout(t);
+      clearTimeout(tmr);
       el?.removeEventListener("keydown", trap);
       if (typeof prevFocus.current?.focus === "function") prevFocus.current.focus();
     };
   }, [open]);
   if (!items.length) return null;
   return (
-    <section className="border-t border-slate-200 bg-white py-12 sm:py-16" aria-label="Galeria">
+    <section className="border-t border-slate-200 bg-white py-12 dark:border-slate-800 dark:bg-slate-950 sm:py-16" aria-label={t("a11y.gallery")}>
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <h2 className="text-center font-serif text-2xl text-slate-900 sm:text-left sm:text-3xl">Galeria</h2>
+        <h2 className="text-center font-serif text-2xl text-slate-900 dark:text-slate-100 sm:text-left sm:text-3xl">{t("gallery.title")}</h2>
         <div className={gridTwo}>
           {items.map((it, idx) =>
             it?.src ? (
@@ -61,7 +63,7 @@ export function Galeria({ items = [] }) {
                 type="button"
                 key={`${it.alt}-${idx}`}
                 onClick={() => setOpen(idx)}
-                className="group flex w-full overflow-hidden rounded-xl border border-slate-200 bg-slate-100 text-left shadow-sm ring-0 transition hover:ring-2 hover:ring-amber-600/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 sm:rounded-2xl"
+                className="group flex w-full overflow-hidden rounded-xl border border-slate-200 bg-slate-100 text-left shadow-sm ring-0 transition hover:ring-2 hover:ring-amber-600/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 dark:border-slate-800 dark:bg-slate-900 sm:rounded-2xl"
               >
                 <span className="relative block aspect-[4/3] w-full overflow-hidden sm:aspect-[16/11]">
                   <img
@@ -83,7 +85,7 @@ export function Galeria({ items = [] }) {
           className="fixed inset-0 z-[100] flex cursor-zoom-out items-center justify-center bg-black/90 p-3 sm:p-4"
           role="dialog"
           aria-modal="true"
-          aria-label="Imagem ampliada"
+          aria-label={t("a11y.dialogImage")}
           onClick={close}
         >
           <button
@@ -91,7 +93,7 @@ export function Galeria({ items = [] }) {
             type="button"
             className="absolute right-3 top-3 z-[101] rounded-full bg-white/15 px-3 py-1.5 text-xl leading-none text-white hover:bg-white/25 sm:right-4 sm:top-4"
             onClick={close}
-            aria-label="Fechar"
+            aria-label={t("a11y.close")}
           >
             ×
           </button>

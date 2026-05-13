@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { getSeo } from "../config/routes.js";
+import { seoFor, useI18n } from "../i18n.jsx";
 
 export function RouteAnnouncer() {
   const { pathname } = useLocation();
+  const { lang } = useI18n();
   const [announce, setAnnounce] = useState("");
   useEffect(() => {
-    const { title } = getSeo(pathname);
+    const { title } = seoFor(pathname, lang);
     setAnnounce(title);
-  }, [pathname]);
+  }, [pathname, lang]);
   return (
     <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
       {announce}

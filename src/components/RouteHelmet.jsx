@@ -1,7 +1,8 @@
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "react-router-dom";
 import slideHero from "imagens/slide1-1920x550.jpg.jpeg";
-import { SITE_ORIGIN, canonicalFor, getSeo } from "../config/routes.js";
+import { SITE_ORIGIN, canonicalFor } from "../config/routes.js";
+import { seoFor, useI18n } from "../i18n.jsx";
 
 function ogImageAbsolute(assetPath) {
   const base = SITE_ORIGIN.replace(/\/$/, "");
@@ -13,7 +14,8 @@ function ogImageAbsolute(assetPath) {
 
 export function RouteHelmet() {
   const { pathname } = useLocation();
-  const { title, description, noindex } = getSeo(pathname);
+  const { lang } = useI18n();
+  const { title, description, noindex } = seoFor(pathname, lang);
   const canonical = canonicalFor(pathname);
   const ogImage = ogImageAbsolute(slideHero);
   return (

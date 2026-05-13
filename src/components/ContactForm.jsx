@@ -3,6 +3,7 @@ import { publicEnv } from "../config/publicEnv.js";
 import { buildMailto } from "../lib/mailto.js";
 import { faleConoscoPage } from "../content/verbatim.js";
 import { assets } from "../config/assetsConfig.js";
+import { useI18n } from "../i18n.jsx";
 
 const initial = { nome: "", email: "", telefone: "", mensagem: "" };
 const WEB3_KEY = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY ?? "";
@@ -15,6 +16,8 @@ function clip(v, max) {
 }
 
 export function ContactForm() {
+  const { lang, t } = useI18n();
+  const fields = t("contact.fields");
   const [form, setForm] = useState(initial);
   const [honeypot, setHoneypot] = useState("");
   const [status, setStatus] = useState("idle");
@@ -26,11 +29,12 @@ export function ContactForm() {
     const email = clip(form.email, 254);
     const telefone = clip(form.telefone, 40);
     const mensagem = clip(form.mensagem, 8000);
+    const subj = lang === "en" ? `Website contact — ${nome || "visitor"}` : `Contato site — ${nome || "visitante"}`;
     if (!WEB3_KEY) {
       window.location.href = buildMailto({
         to: publicEnv.emailPrimary,
-        subject: `Contato site — ${nome || "visitante"}`,
-        body: `Nome: ${nome}\nE-mail: ${email}\nTelefone: ${telefone}\n\n${mensagem}`,
+        subject: subj,
+        body: `${fields[0]}: ${nome}\n${fields[1]}: ${email}\n${fields[2]}: ${telefone}\n\n${mensagem}`,
       });
       return;
     }
@@ -41,8 +45,8 @@ export function ContactForm() {
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
           access_key: WEB3_KEY,
-          subject: `Contato site — ${nome || "visitante"}`,
-          from_name: nome || "Visitante",
+          subject: subj,
+          from_name: nome || (lang === "en" ? "Visitor" : "Visitante"),
           email: email || publicEnv.emailPrimary,
           phone: telefone,
           message: mensagem,
@@ -61,62 +65,62 @@ export function ContactForm() {
   }
 
   return (
-    <section id="contato" className="bg-slate-900 py-12 text-white sm:py-16 md:py-20">
+    <section id="contato" className="bg-slate-900 py-12 text-white dark:bg-black sm:py-16 md:py-20">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:gap-12 sm:px-6 lg:grid-cols-[0.95fr_1.05fr]">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-amber-500">{faleConoscoPage.title}</p>
-          <h2 className="mt-2 font-serif text-3xl sm:mt-3 sm:text-4xl">Canais oficiais</h2>
+          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-amber-400">{t("contact.eyebrow")}</p>
+          <h2 className="mt-2 font-serif text-3xl sm:mt-3 sm:text-4xl">{t("contact.channelsHeading")}</h2>
           <dl className="mt-8 space-y-6 text-sm">
             <div className="flex items-start gap-3">
               <img src={assets.iconTel} alt="" className="mt-0.5 h-5 w-5 shrink-0 opacity-80" width={20} height={20} loading="lazy" />
               <div>
-                <dt className="text-xs font-semibold uppercase tracking-[0.3em] text-white/50">Telefone/WhatsApp</dt>
+                <dt className="text-xs font-semibold uppercase tracking-[0.3em] text-white/50">{t("contact.phoneWhats")}</dt>
                 <dd className="mt-2">
-                  <a className="text-lg font-semibold text-amber-500" href={`tel:${publicEnv.phoneTel}`}>
+                  <a className="text-lg font-semibold text-amber-400" href={`tel:${publicEnv.phoneTel}`}>
                     {publicEnv.phoneDisplay}
                   </a>
                 </dd>
               </div>
             </div>
             <div>
-              <dt className="text-xs font-semibold uppercase tracking-[0.3em] text-white/50">E-mails</dt>
+              <dt className="text-xs font-semibold uppercase tracking-[0.3em] text-white/50">{t("contact.emails")}</dt>
               <dd className="mt-2 space-y-1">
-                <a className="block font-semibold text-white hover:text-amber-400" href={`mailto:${publicEnv.emailPrimary}`}>
+                <a className="block font-semibold text-white hover:text-amber-300" href={`mailto:${publicEnv.emailPrimary}`}>
                   {publicEnv.emailPrimary}
                 </a>
-                <a className="block font-semibold text-white/80 hover:text-amber-400" href={`mailto:${publicEnv.emailSecondary}`}>
+                <a className="block font-semibold text-white/80 hover:text-amber-300" href={`mailto:${publicEnv.emailSecondary}`}>
                   {publicEnv.emailSecondary}
                 </a>
               </dd>
             </div>
             <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-              <dt className="sr-only">Fale conosco</dt>
+              <dt className="sr-only">{t("contact.eyebrow")}</dt>
               <dd className="mt-3 space-y-2 text-white/90">
                 <p>
-                  <span className="text-white/50">{faleConoscoPage.phoneLabel}</span>{" "}
-                  <a className="font-semibold text-amber-500" href={`tel:${faleConoscoPage.phoneTel}`}>
+                  <span className="text-white/50">{t("contact.phoneWhats")}</span>{" "}
+                  <a className="font-semibold text-amber-400" href={`tel:${faleConoscoPage.phoneTel}`}>
                     {faleConoscoPage.phoneDisplay}
                   </a>
                 </p>
                 <p>
-                  <span className="text-white/50">{faleConoscoPage.emailLabel}</span>{" "}
-                  <a className="font-semibold text-amber-500" href={`mailto:${faleConoscoPage.email}`}>
+                  <span className="text-white/50">{t("contact.emails")}</span>{" "}
+                  <a className="font-semibold text-amber-400" href={`mailto:${faleConoscoPage.email}`}>
                     {faleConoscoPage.email}
                   </a>
                 </p>
-                <p className="flex items-center gap-2">
+                <p className="flex flex-wrap items-center gap-2">
                   <img src={assets.iconHora} alt="" className="h-4 w-4 shrink-0 opacity-80" width={16} height={16} loading="lazy" />
-                  <span className="text-white/50">{faleConoscoPage.hoursTitle}</span> {faleConoscoPage.hours}
+                  <span className="text-white/50">{t("contact.hoursTitle")}</span> {t("contact.hours")}
                 </p>
               </dd>
             </div>
           </dl>
         </div>
         <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-md">
-          <h3 className="font-serif text-2xl text-white">{faleConoscoPage.formTitle}</h3>
+          <h3 className="font-serif text-2xl text-white">{t("contact.formTitle")}</h3>
           <form className="mt-6 space-y-5" onSubmit={onSubmit}>
             <label className="sr-only" htmlFor="contact-company">
-              Empresa
+              {t("contact.honeypot")}
             </label>
             <input
               id="contact-company"
@@ -130,9 +134,9 @@ export function ContactForm() {
               aria-hidden
             />
             {[
-              ["nome", faleConoscoPage.fields[0], "text"],
-              ["email", faleConoscoPage.fields[1], "email"],
-              ["telefone", faleConoscoPage.fields[2], "tel"],
+              ["nome", fields[0], "text"],
+              ["email", fields[1], "email"],
+              ["telefone", fields[2], "tel"],
             ].map(([key, label, type]) => (
               <label key={key} className="block text-sm">
                 <span className="text-xs font-semibold uppercase tracking-[0.25em] text-white/50">{label}</span>
@@ -146,7 +150,7 @@ export function ContactForm() {
               </label>
             ))}
             <label className="block text-sm">
-              <span className="text-xs font-semibold uppercase tracking-[0.25em] text-white/50">{faleConoscoPage.fields[3]}</span>
+              <span className="text-xs font-semibold uppercase tracking-[0.25em] text-white/50">{fields[3]}</span>
               <textarea
                 required
                 rows={5}
@@ -160,10 +164,10 @@ export function ContactForm() {
               disabled={status === "sending"}
               className="w-full rounded-full bg-amber-600 py-3 text-sm font-semibold uppercase tracking-wider text-white shadow-lg shadow-amber-900/30 transition hover:bg-white hover:text-slate-900 disabled:opacity-60"
             >
-              {status === "sending" ? "A enviar…" : WEB3_KEY ? "Enviar mensagem" : "Enviar por e-mail"}
+              {status === "sending" ? t("contact.sending") : WEB3_KEY ? t("contact.submitWeb3") : t("contact.submitMailto")}
             </button>
-            {status === "ok" ? <p className="text-center text-sm text-amber-400">Mensagem enviada. Obrigado.</p> : null}
-            {status === "err" ? <p className="text-center text-sm text-red-300">Não foi possível enviar. Tente o e-mail ou mais tarde.</p> : null}
+            {status === "ok" ? <p className="text-center text-sm text-amber-300">{t("contact.success")}</p> : null}
+            {status === "err" ? <p className="text-center text-sm text-red-300">{t("contact.error")}</p> : null}
           </form>
         </div>
       </div>
