@@ -43,6 +43,16 @@ export function Footer() {
           </div>
         </div>
         <p className="mt-8 text-xs text-slate-500 dark:text-slate-500 sm:mt-10">{t("footer.rights", { year: new Date().getFullYear() })}</p>
+        <p className="mt-3 text-center text-[11px] leading-relaxed text-slate-500/80 transition-colors dark:text-slate-500/80 md:text-right md:text-xs hover:text-slate-600 dark:hover:text-slate-400">
+          Desenvolvido por{" "}
+          <a
+            href="mailto:fabiano.freitas@gmail.com"
+            className="font-medium text-slate-600 underline-offset-2 hover:text-amber-600 hover:underline dark:text-slate-400 dark:hover:text-amber-500"
+          >
+            Fabiano Freitas
+          </a>{" "}
+          | fabiano.freitas@gmail.com
+        </p>
       </div>
     </footer>
   );
