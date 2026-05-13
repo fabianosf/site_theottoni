@@ -1,0 +1,19 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_APP_PHONE_TEL: "+5521979432464"
+        VITE_APP_PHONE_DISPLAY: "(21) 97943-2464"
+        VITE_APP_EMAIL_PRIMARY: "contato@theottoni.com.br"
+        VITE_APP_EMAIL_COMERCIAL: "comercial@theottoni.com.br"
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
