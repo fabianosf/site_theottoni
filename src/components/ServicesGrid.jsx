@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { serviceCards } from "../content/verbatim.js";
 import { servicosArchive } from "../content/servicosIndex.js";
 import { serviceHero } from "../config/assetsConfig.js";
+import { pathForLang } from "../config/routes.js";
 import { dict, useTranslation } from "../i18n.jsx";
 
 function slugFromHref(href) {
@@ -94,7 +95,7 @@ export function ServicesGrid() {
             );
           })}
           <Link
-            to="/juridico"
+            to={pathForLang(lang, "legal")}
             className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:border-amber-600/40 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900 dark:hover:border-amber-500/40"
           >
             <img src={serviceHero["meio-ambiente"]} alt={t("a11y.decorativeImage")} loading="lazy" className="h-36 w-full object-cover object-center" />

@@ -1,9 +1,13 @@
 export const HOME_SCROLL_PATHS = Object.freeze({
   "/": "top",
   "/sobre": "sobre",
+  "/about": "sobre",
   "/servicos": "servicos",
+  "/services": "servicos",
   "/projetos": "projetos",
+  "/projects": "projetos",
   "/contato": "contato",
+  "/contact": "contato",
 });
 
 export function scrollToHomeSection(pathname) {

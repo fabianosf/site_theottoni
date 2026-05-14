@@ -16,7 +16,7 @@ export function RouteHelmet() {
   const { pathname } = useLocation();
   const { lang, t } = useTranslation();
   const { title, description, noindex } = seoFor(pathname, lang);
-  const canonical = canonicalFor(pathname);
+  const canonical = canonicalFor(pathname, lang);
   const ogImage = ogImageAbsolute(slideHero);
   return (
     <Helmet>

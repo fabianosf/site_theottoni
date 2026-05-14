@@ -1,9 +1,21 @@
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { AppRoutes } from "./Router.jsx";
 import { assets } from "./config/assetsConfig.js";
-import { SITE_ORIGIN } from "./config/routes.js";
+import { SITE_ORIGIN, seoKeyFor } from "./config/routes.js";
 import { ThemeProvider, I18nProvider, useTranslation } from "./i18n.jsx";
+
+function DocumentTitle() {
+  const { pathname } = useLocation();
+  const { lang, t } = useTranslation();
+  const key = seoKeyFor(pathname);
+  useEffect(() => {
+    const k = key ?? "notFound";
+    document.title = t(`metadata.${k}.title`);
+  }, [pathname, lang, key, t]);
+  return null;
+}
 
 function HelmetInner() {
   const { lang, t } = useTranslation();
@@ -31,6 +43,7 @@ export default function AppRoot() {
       <I18nProvider>
         <BrowserRouter>
           <HelmetInner />
+          <DocumentTitle />
           <AppRoutes />
         </BrowserRouter>
       </I18nProvider>

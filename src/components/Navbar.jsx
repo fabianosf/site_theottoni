@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { NavLink, Link, useLocation } from "react-router-dom";
+import { NavLink, Link, useLocation, useNavigate } from "react-router-dom";
 import { Sun, Moon } from "lucide-react";
 import { publicEnv } from "../config/publicEnv.js";
-import { NAV_ROUTES } from "../config/routes.js";
+import { NAV_ROUTES, norm, pathForLang, pathForSeoKey, seoKeyFor } from "../config/routes.js";
 import { assets } from "../config/assetsConfig.js";
 import { isHomeScrollPath, scrollToHomeSection } from "../lib/scrollSection.js";
 import { useTranslation, useTheme } from "../i18n.jsx";
@@ -17,8 +17,14 @@ const navCls = ({ isActive }) =>
 export function Navbar() {
   const { lang, setLang, t } = useTranslation();
   const { dark, toggle } = useTheme();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const loc = useLocation();
+  const applyLang = (next) => {
+    const key = seoKeyFor(loc.pathname) ?? "home";
+    setLang(next);
+    navigate(`${pathForSeoKey(next, key)}${loc.search}${loc.hash}`, { replace: true });
+  };
   const headerRef = useRef(null);
   const menuBtnRef = useRef(null);
   const prevOpen = useRef(false);
@@ -48,7 +54,7 @@ export function Navbar() {
     >
       <div className="relative mx-auto flex max-w-6xl items-center justify-between gap-2 px-4 py-3 sm:gap-3 sm:px-6 sm:py-4">
         <Link
-          to="/"
+          to={pathForLang(lang, "home")}
           className="group flex min-w-0 flex-1 items-center gap-2 sm:gap-3"
           onClick={(e) => {
             setOpen(false);
@@ -69,36 +75,39 @@ export function Navbar() {
           </span>
         </Link>
         <nav className="hidden items-center gap-0.5 lg:flex lg:gap-1 xl:gap-3" aria-label={t("a11y.menuMain")}>
-          {NAV_ROUTES.map((l) => (
+          {NAV_ROUTES.map((l) => {
+            const to = pathForLang(lang, l.labelKey);
+            return (
             <NavLink
-              key={l.path}
-              to={l.path}
+              key={l.labelKey}
+              to={to}
               end={l.end}
               className={navCls}
               onClick={(e) => {
-                if (isHomeScrollPath(loc.pathname) && loc.pathname === l.path) {
+                if (isHomeScrollPath(loc.pathname) && norm(loc.pathname) === norm(to)) {
                   e.preventDefault();
-                  scrollToHomeSection(l.path);
+                  scrollToHomeSection(to);
                 }
               }}
             >
               {t(`nav.${l.labelKey}`)}
             </NavLink>
-          ))}
+            );
+          })}
         </nav>
         <div className="flex shrink-0 items-center gap-1 sm:gap-2">
           <div className="hidden items-center gap-0.5 rounded-full border border-slate-200 p-0.5 dark:border-slate-700 sm:flex">
             <button
               type="button"
               className={`rounded-full px-2 py-1 text-[10px] font-semibold uppercase tracking-wide ${lang === "pt" ? "bg-slate-900 text-white dark:bg-amber-600 dark:text-white" : "text-slate-600 dark:text-slate-400"}`}
-              onClick={() => setLang("pt")}
+              onClick={() => applyLang("pt")}
             >
               PT
             </button>
             <button
               type="button"
               className={`rounded-full px-2 py-1 text-[10px] font-semibold uppercase tracking-wide ${lang === "en" ? "bg-slate-900 text-white dark:bg-amber-600 dark:text-white" : "text-slate-600 dark:text-slate-400"}`}
-              onClick={() => setLang("en")}
+              onClick={() => applyLang("en")}
             >
               EN
             </button>
@@ -148,35 +157,38 @@ export function Navbar() {
               <button
                 type="button"
                 className={`flex-1 rounded-full py-2 text-xs font-semibold uppercase ${lang === "pt" ? "bg-slate-900 text-white dark:bg-amber-600" : "text-slate-600 dark:text-slate-400"}`}
-                onClick={() => setLang("pt")}
+                onClick={() => applyLang("pt")}
               >
                 PT
               </button>
               <button
                 type="button"
                 className={`flex-1 rounded-full py-2 text-xs font-semibold uppercase ${lang === "en" ? "bg-slate-900 text-white dark:bg-amber-600" : "text-slate-600 dark:text-slate-400"}`}
-                onClick={() => setLang("en")}
+                onClick={() => applyLang("en")}
               >
                 EN
               </button>
             </div>
-            {NAV_ROUTES.map((l) => (
+            {NAV_ROUTES.map((l) => {
+              const to = pathForLang(lang, l.labelKey);
+              return (
               <NavLink
-                key={l.path}
-                to={l.path}
+                key={l.labelKey}
+                to={to}
                 end={l.end}
                 className={navCls}
                 onClick={(e) => {
-                  if (isHomeScrollPath(loc.pathname) && loc.pathname === l.path) {
+                  if (isHomeScrollPath(loc.pathname) && norm(loc.pathname) === norm(to)) {
                     e.preventDefault();
-                    scrollToHomeSection(l.path);
+                    scrollToHomeSection(to);
                   }
                   setOpen(false);
                 }}
               >
                 {t(`nav.${l.labelKey}`)}
               </NavLink>
-            ))}
+              );
+            })}
             <a
               href={`tel:${publicEnv.phoneTel}`}
               className="mt-2 rounded-full bg-slate-900 py-3 text-center text-sm font-semibold text-white dark:bg-slate-800"

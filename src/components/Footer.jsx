@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import { publicEnv } from "../config/publicEnv.js";
-import { FOOTER_LEGAL_LINKS } from "../config/routes.js";
+import { FOOTER_LEGAL_LINKS, pathForLang } from "../config/routes.js";
 import { assets } from "../config/assetsConfig.js";
 import { useTranslation } from "../i18n.jsx";
 
 export function Footer() {
-  const { t } = useTranslation();
+  const { lang, t } = useTranslation();
   return (
     <footer className="border-t border-slate-200 bg-slate-50 pb-10 pt-12 dark:border-slate-800 dark:bg-slate-900 sm:pb-12 sm:pt-16">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -35,7 +35,7 @@ export function Footer() {
             </p>
             <p className="mt-6 flex flex-wrap gap-x-4 gap-y-2 text-xs font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-500">
               {FOOTER_LEGAL_LINKS.map((l) => (
-                <Link key={`${l.to}-${l.labelKey}`} to={l.to} className="hover:underline">
+                <Link key={l.labelKey} to={pathForLang(lang, l.labelKey)} className="hover:underline">
                   {t("footer.legal")}
                 </Link>
               ))}

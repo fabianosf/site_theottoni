@@ -68,6 +68,15 @@ export const dict = {
         description: "A página solicitada não existe ou foi movida.",
       },
     },
+    metadata: {
+      home: { title: "Theottoni — Início" },
+      about: { title: "Theottoni — Sobre nós" },
+      services: { title: "Theottoni — Serviços" },
+      projects: { title: "Theottoni — Projetos e instalações" },
+      contact: { title: "Theottoni — Contato" },
+      legal: { title: "Theottoni — Jurídico e documentação" },
+      notFound: { title: "Theottoni — Página não encontrada" },
+    },
     hero: {
       ctaServices: "Serviços",
       ctaContact: "Fale conosco",
@@ -227,6 +236,15 @@ export const dict = {
         title: "Theottoni — Page not found",
         description: "The requested page does not exist or has been moved.",
       },
+    },
+    metadata: {
+      home: { title: "Theottoni — Home" },
+      about: { title: "Theottoni — About" },
+      services: { title: "Theottoni — Services" },
+      projects: { title: "Theottoni — Projects & facilities" },
+      contact: { title: "Theottoni — Contact" },
+      legal: { title: "Theottoni — Legal & documentation" },
+      notFound: { title: "Theottoni — Page not found" },
     },
     hero: {
       ctaServices: "Services",

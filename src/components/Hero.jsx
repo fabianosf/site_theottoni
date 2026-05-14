@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { globalIntro, windAndCampus, urbanHydroSummary } from "../content/verbatim.js";
+import { pathForLang } from "../config/routes.js";
 import { assets } from "../config/assetsConfig.js";
 import { useTranslation } from "../i18n.jsx";
 
@@ -33,13 +34,13 @@ export function Hero() {
           <p className="mt-5 max-w-xl text-sm leading-relaxed text-white/90 sm:mt-6 sm:text-base">{intro}</p>
           <div className="mt-10 flex flex-wrap gap-4">
             <Link
-              to="/servicos"
+              to={pathForLang(lang, "services")}
               className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-amber-600 px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white shadow-lg shadow-amber-900/25 transition hover:bg-white hover:text-slate-900 dark:hover:text-slate-900 sm:px-8"
             >
               {t("hero.ctaServices")}
             </Link>
             <Link
-              to="/contato"
+              to={pathForLang(lang, "contact")}
               className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full border border-white/40 px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white transition hover:border-amber-300 hover:text-amber-100 sm:px-8"
             >
               {t("hero.ctaContact")}
