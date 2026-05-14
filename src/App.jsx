@@ -3,14 +3,14 @@ import { Helmet } from "react-helmet-async";
 import { AppRoutes } from "./Router.jsx";
 import { assets } from "./config/assetsConfig.js";
 import { SITE_ORIGIN } from "./config/routes.js";
-import { ThemeProvider, I18nProvider, useI18n } from "./i18n.jsx";
+import { ThemeProvider, I18nProvider, useTranslation } from "./i18n.jsx";
 
 function HelmetInner() {
-  const { lang, t } = useI18n();
+  const { lang, t } = useTranslation();
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    name: "Theottoni",
+    name: t("brand.name"),
     description: t("brand.tagline"),
     areaServed: "BR",
     url: `${SITE_ORIGIN}/`,

@@ -1,4 +1,5 @@
 import { urbanHydroPage } from "../content/verbatim.js";
+import { useTranslation } from "../i18n.jsx";
 
 export function ServiceSections({ page }) {
   return (
@@ -21,6 +22,7 @@ export function ServiceSections({ page }) {
 }
 
 export function UrbanHydroDetail() {
+  const { t } = useTranslation();
   const p = urbanHydroPage;
   return (
     <div className="space-y-8 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
@@ -81,10 +83,10 @@ export function UrbanHydroDetail() {
           <table className="min-w-full border-collapse text-left text-xs sm:text-sm">
             <thead className="bg-slate-100 dark:bg-slate-900">
               <tr>
-                <th className="px-4 py-3 font-semibold text-slate-900 dark:text-slate-100">Atributo</th>
-                <th className="px-4 py-3 font-semibold text-slate-900 dark:text-slate-100">Médias e Grandes Usinas (P&gt;30MW)</th>
-                <th className="px-4 py-3 font-semibold text-slate-900 dark:text-slate-100">PCH (ISPS30 MW)</th>
-                <th className="px-4 py-3 font-semibold text-slate-900 dark:text-slate-100">UPQ/CHF</th>
+                <th className="px-4 py-3 font-semibold text-slate-900 dark:text-slate-100">{t("hydro.tableAttr")}</th>
+                <th className="px-4 py-3 font-semibold text-slate-900 dark:text-slate-100">{t("hydro.tableUhe")}</th>
+                <th className="px-4 py-3 font-semibold text-slate-900 dark:text-slate-100">{t("hydro.tablePch")}</th>
+                <th className="px-4 py-3 font-semibold text-slate-900 dark:text-slate-100">{t("hydro.tableUpq")}</th>
               </tr>
             </thead>
             <tbody>
@@ -100,7 +102,7 @@ export function UrbanHydroDetail() {
           </table>
         </div>
       </div>
-      <p className="text-xs text-slate-500 dark:text-slate-500">{p.contactNote}</p>
+      <p className="text-xs text-slate-500 dark:text-slate-500">{t("hydro.contactNote")}</p>
     </div>
   );
 }

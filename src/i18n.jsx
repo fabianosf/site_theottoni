@@ -1,8 +1,20 @@
-import { createContext, useCallback, useContext, useLayoutEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { seoKeyFor } from "./config/routes.js";
+import { SERVICE_PAGE_ITEMS_EN, SERVICE_PAGE_ITEMS_PT } from "./content/servicesI18n.js";
+import { politicaPrivacidade, termosDeUso } from "./content/legal.js";
+import { politicaPrivacidadeEn, termosDeUsoEn } from "./content/legalEn.js";
 
 const LS_LANG = "theottoni.lang";
 const LS_THEME = "theottoni.theme";
+const LS_I18NEXT = "i18nextLng";
+
+function readStoredLang() {
+  if (typeof localStorage === "undefined") return "pt";
+  const raw = localStorage.getItem(LS_LANG) || localStorage.getItem(LS_I18NEXT) || "";
+  const r = String(raw).toLowerCase();
+  if (r === "en" || r.startsWith("en-")) return "en";
+  return "pt";
+}
 
 function dig(obj, path) {
   return path.split(".").reduce((o, k) => (o == null ? o : o[k]), obj);
@@ -21,7 +33,9 @@ export const dict = {
       taglineSub: "Recursos hídricos",
     },
     brand: {
+      name: "Theottoni",
       tagline: "Estudos — Projetos e Tecnologia em Recursos Hídricos",
+      ogImageAlt: "Theottoni",
     },
     seo: {
       home: {
@@ -82,8 +96,10 @@ export const dict = {
       legalCardTypes: "Documentação",
       legalCardDesc: "Licenciamento, política de privacidade e termos de uso.",
       legalCardCta: "Ver detalhes",
+      linkCta: "Clique e conheça",
+      pageItems: SERVICE_PAGE_ITEMS_PT,
     },
-    gallery: { title: "Galeria" },
+    gallery: { title: "Galeria", altPredio: "Prédio", altEolica: "Eólica" },
     portfolio: {
       eyebrow: "Projetos",
       heading: "Imóveis e instalações",
@@ -118,10 +134,17 @@ export const dict = {
       subtitle: "Jurídico",
       privacy: "Política de Privacidade",
       terms: "Termos de Uso",
+      privacyBody: politicaPrivacidade,
+      termsBody: termosDeUso,
+      envNote: "",
     },
     footer: {
       legal: "Documentação legal",
       rights: "© {year} Theottoni. Todos os direitos reservados.",
+      devPrefix: "Desenvolvido por",
+      devSep: "|",
+      devEmail: "fabiano.freitas@gmail.com",
+      devName: "Fabiano Freitas",
     },
     notFound: {
       title: "Página não encontrada",
@@ -131,6 +154,16 @@ export const dict = {
     common: {
       loading: "Carregando…",
       source: "Fonte original",
+      mailSubject: "Contato site — {name}",
+      visitor: "visitante",
+    },
+    hydro: {
+      tableAttr: "Atributo",
+      tableUhe: "Médias e Grandes Usinas (P>30MW)",
+      tablePch: "PCH (ISPS30 MW)",
+      tableUpq: "UPQ/CHF",
+      contactNote:
+        "Para maiores informações, solicitamos que mantenha contato conosco em https://theottoni.com.br/fale-conosco/",
     },
     a11y: {
       skip: "Ir para o conteúdo",
@@ -141,6 +174,9 @@ export const dict = {
       gallery: "Galeria",
       dialogImage: "Imagem ampliada",
       close: "Fechar",
+      phoneIconAlt: "Ícone de telefone",
+      clockIconAlt: "Ícone de horário",
+      decorativeImage: "Imagem decorativa",
       themeDark: "Ativar tema escuro",
       themeLight: "Ativar tema claro",
     },
@@ -157,7 +193,9 @@ export const dict = {
       taglineSub: "Water resources",
     },
     brand: {
+      name: "Theottoni",
       tagline: "Studies — Projects and Technology in Water Resources",
+      ogImageAlt: "Theottoni",
     },
     seo: {
       home: {
@@ -218,8 +256,10 @@ export const dict = {
       legalCardTypes: "Documentation",
       legalCardDesc: "Licensing, privacy policy and terms of use.",
       legalCardCta: "View details",
+      linkCta: "Click to learn more",
+      pageItems: SERVICE_PAGE_ITEMS_EN,
     },
-    gallery: { title: "Gallery" },
+    gallery: { title: "Gallery", altPredio: "Building", altEolica: "Wind" },
     portfolio: {
       eyebrow: "Projects",
       heading: "Real estate & facilities",
@@ -254,10 +294,17 @@ export const dict = {
       subtitle: "Legal",
       privacy: "Privacy policy",
       terms: "Terms of use",
+      privacyBody: politicaPrivacidadeEn,
+      termsBody: termosDeUsoEn,
+      envNote: "The environmental licensing sections below are shown in Portuguese.",
     },
     footer: {
       legal: "Legal documentation",
       rights: "© {year} Theottoni. All rights reserved.",
+      devPrefix: "Developed by",
+      devSep: "|",
+      devEmail: "fabiano.freitas@gmail.com",
+      devName: "Fabiano Freitas",
     },
     notFound: {
       title: "Page not found",
@@ -267,6 +314,15 @@ export const dict = {
     common: {
       loading: "Loading…",
       source: "Original source",
+      mailSubject: "Website contact — {name}",
+      visitor: "visitor",
+    },
+    hydro: {
+      tableAttr: "Attribute",
+      tableUhe: "Medium and large plants (P>30MW)",
+      tablePch: "SHP (ISPS30 MW)",
+      tableUpq: "UPQ/CHF",
+      contactNote: "For more information, please contact us at https://theottoni.com.br/fale-conosco/",
     },
     a11y: {
       skip: "Skip to content",
@@ -277,6 +333,9 @@ export const dict = {
       gallery: "Gallery",
       dialogImage: "Enlarged image",
       close: "Close",
+      phoneIconAlt: "Phone icon",
+      clockIconAlt: "Hours icon",
+      decorativeImage: "Decorative image",
       themeDark: "Enable dark theme",
       themeLight: "Enable light theme",
     },
@@ -295,11 +354,27 @@ const I18nContext = createContext(null);
 const ThemeContext = createContext(null);
 
 export function I18nProvider({ children }) {
-  const [lang, setLangState] = useState(() => (typeof localStorage !== "undefined" && localStorage.getItem(LS_LANG) === "en" ? "en" : "pt"));
+  const [lang, setLangState] = useState(readStoredLang);
+  useLayoutEffect(() => {
+    if (typeof document !== "undefined") document.documentElement.setAttribute("lang", lang === "en" ? "en" : "pt-BR");
+  }, [lang]);
+  useEffect(() => {
+    const onStorage = (e) => {
+      if (!e.key || e.key === LS_LANG || e.key === LS_I18NEXT) setLangState(readStoredLang());
+    };
+    if (typeof window !== "undefined") window.addEventListener("storage", onStorage);
+    return () => {
+      if (typeof window !== "undefined") window.removeEventListener("storage", onStorage);
+    };
+  }, []);
   const setLang = useCallback((L) => {
     const v = L === "en" ? "en" : "pt";
     setLangState(v);
-    if (typeof localStorage !== "undefined") localStorage.setItem(LS_LANG, v);
+    if (typeof localStorage !== "undefined") {
+      localStorage.setItem(LS_LANG, v);
+      localStorage.setItem(LS_I18NEXT, v === "en" ? "en" : "pt");
+    }
+    if (typeof document !== "undefined") document.documentElement.setAttribute("lang", v === "en" ? "en" : "pt-BR");
   }, []);
   const t = useMemo(() => {
     const L = lang === "en" ? "en" : "pt";
@@ -315,9 +390,9 @@ export function I18nProvider({ children }) {
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 }
 
-export function useI18n() {
+export function useTranslation() {
   const v = useContext(I18nContext);
-  if (!v) throw new Error("useI18n");
+  if (!v) throw new Error("useTranslation");
   return v;
 }
 

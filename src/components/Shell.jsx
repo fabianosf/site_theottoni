@@ -4,10 +4,10 @@ import { Navbar } from "./Navbar.jsx";
 import { Footer } from "./Footer.jsx";
 import { RouteHelmet } from "./RouteHelmet.jsx";
 import { RouteAnnouncer } from "./RouteAnnouncer.jsx";
-import { useI18n } from "../i18n.jsx";
+import { useTranslation } from "../i18n.jsx";
 
 function Fallback() {
-  const { t } = useI18n();
+  const { t } = useTranslation();
   return (
     <div className="flex min-h-[30vh] items-center justify-center px-4 text-sm text-slate-500 dark:text-slate-400" aria-live="polite">
       {t("common.loading")}
@@ -16,7 +16,7 @@ function Fallback() {
 }
 
 export function Shell() {
-  const { t } = useI18n();
+  const { t } = useTranslation();
   return (
     <>
       <button

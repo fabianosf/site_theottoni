@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { useI18n } from "../i18n.jsx";
+import { useTranslation } from "../i18n.jsx";
 
 export default function NotFoundPage() {
-  const { t } = useI18n();
+  const { t } = useTranslation();
   return (
     <section className="border-t border-slate-200 bg-slate-50 px-4 py-16 dark:border-slate-800 dark:bg-slate-900 sm:py-24">
       <div className="mx-auto max-w-lg text-center">

@@ -3,7 +3,7 @@ import { publicEnv } from "../config/publicEnv.js";
 import { buildMailto } from "../lib/mailto.js";
 import { faleConoscoPage } from "../content/verbatim.js";
 import { assets } from "../config/assetsConfig.js";
-import { useI18n } from "../i18n.jsx";
+import { useTranslation } from "../i18n.jsx";
 
 const initial = { nome: "", email: "", telefone: "", mensagem: "" };
 const WEB3_KEY = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY ?? "";
@@ -16,7 +16,7 @@ function clip(v, max) {
 }
 
 export function ContactForm() {
-  const { lang, t } = useI18n();
+  const { t } = useTranslation();
   const fields = t("contact.fields");
   const [form, setForm] = useState(initial);
   const [honeypot, setHoneypot] = useState("");
@@ -29,7 +29,7 @@ export function ContactForm() {
     const email = clip(form.email, 254);
     const telefone = clip(form.telefone, 40);
     const mensagem = clip(form.mensagem, 8000);
-    const subj = lang === "en" ? `Website contact — ${nome || "visitor"}` : `Contato site — ${nome || "visitante"}`;
+    const subj = t("common.mailSubject", { name: nome || t("common.visitor") });
     if (!WEB3_KEY) {
       window.location.href = buildMailto({
         to: publicEnv.emailPrimary,
@@ -46,7 +46,7 @@ export function ContactForm() {
         body: JSON.stringify({
           access_key: WEB3_KEY,
           subject: subj,
-          from_name: nome || (lang === "en" ? "Visitor" : "Visitante"),
+          from_name: nome || t("common.visitor"),
           email: email || publicEnv.emailPrimary,
           phone: telefone,
           message: mensagem,
@@ -72,7 +72,7 @@ export function ContactForm() {
           <h2 className="mt-2 font-serif text-3xl sm:mt-3 sm:text-4xl">{t("contact.channelsHeading")}</h2>
           <dl className="mt-8 space-y-6 text-sm">
             <div className="flex items-start gap-3">
-              <img src={assets.iconTel} alt="" className="mt-0.5 h-5 w-5 shrink-0 opacity-80" width={20} height={20} loading="lazy" />
+              <img src={assets.iconTel} alt={t("a11y.phoneIconAlt")} className="mt-0.5 h-5 w-5 shrink-0 opacity-80" width={20} height={20} loading="lazy" />
               <div>
                 <dt className="text-xs font-semibold uppercase tracking-[0.3em] text-white/50">{t("contact.phoneWhats")}</dt>
                 <dd className="mt-2">
@@ -109,7 +109,7 @@ export function ContactForm() {
                   </a>
                 </p>
                 <p className="flex flex-wrap items-center gap-2">
-                  <img src={assets.iconHora} alt="" className="h-4 w-4 shrink-0 opacity-80" width={16} height={16} loading="lazy" />
+                  <img src={assets.iconHora} alt={t("a11y.clockIconAlt")} className="h-4 w-4 shrink-0 opacity-80" width={16} height={16} loading="lazy" />
                   <span className="text-white/50">{t("contact.hoursTitle")}</span> {t("contact.hours")}
                 </p>
               </dd>

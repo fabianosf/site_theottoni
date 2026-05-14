@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { useLocation } from "react-router-dom";
 import slideHero from "imagens/slide1-1920x550.jpg.jpeg";
 import { SITE_ORIGIN, canonicalFor } from "../config/routes.js";
-import { seoFor, useI18n } from "../i18n.jsx";
+import { seoFor, useTranslation } from "../i18n.jsx";
 
 function ogImageAbsolute(assetPath) {
   const base = SITE_ORIGIN.replace(/\/$/, "");
@@ -14,7 +14,7 @@ function ogImageAbsolute(assetPath) {
 
 export function RouteHelmet() {
   const { pathname } = useLocation();
-  const { lang } = useI18n();
+  const { lang, t } = useTranslation();
   const { title, description, noindex } = seoFor(pathname, lang);
   const canonical = canonicalFor(pathname);
   const ogImage = ogImageAbsolute(slideHero);
@@ -28,7 +28,7 @@ export function RouteHelmet() {
       <meta property="og:description" content={description} />
       <meta property="og:url" content={canonical} />
       <meta property="og:image" content={ogImage} />
-      <meta property="og:image:alt" content="Theottoni" />
+      <meta property="og:image:alt" content={t("brand.ogImageAlt")} />
       <meta name="twitter:image" content={ogImage} />
     </Helmet>
   );

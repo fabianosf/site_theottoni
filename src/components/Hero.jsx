@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import { brand, globalIntro, windAndCampus, urbanHydroSummary } from "../content/verbatim.js";
+import { globalIntro, windAndCampus, urbanHydroSummary } from "../content/verbatim.js";
 import { assets } from "../config/assetsConfig.js";
-import { useI18n } from "../i18n.jsx";
+import { useTranslation } from "../i18n.jsx";
 
 export function Hero() {
-  const { lang, t } = useI18n();
+  const { lang, t } = useTranslation();
   const intro = lang === "en" ? t("home.intro") : globalIntro.body;
   const windTitle = lang === "en" ? t("home.windTitle") : windAndCampus.title;
   const windBody = lang === "en" ? t("home.windBody") : windAndCampus.body;
@@ -15,7 +15,7 @@ export function Hero() {
     <section id="top" className="relative overflow-hidden text-white">
       <img
         src={assets.heroSlide}
-        alt=""
+        alt={t("a11y.decorativeImage")}
         className="absolute inset-0 h-full w-full object-cover"
         width={1920}
         height={550}
@@ -28,7 +28,7 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(217,119,6,0.22),_transparent_55%)] dark:bg-[radial-gradient(circle_at_top,_rgba(251,191,36,0.18),_transparent_55%)]" />
       <div className="relative mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:gap-12 sm:px-6 sm:py-20 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:py-24">
         <div>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-amber-400 sm:text-xs sm:tracking-[0.35em]">{brand.name}</p>
+          <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-amber-400 sm:text-xs sm:tracking-[0.35em]">{t("brand.name")}</p>
           <h1 className="mt-3 font-serif text-[clamp(1.75rem,5vw,3.75rem)] leading-tight tracking-tight text-white sm:mt-4">{t("brand.tagline")}</h1>
           <p className="mt-5 max-w-xl text-sm leading-relaxed text-white/90 sm:mt-6 sm:text-base">{intro}</p>
           <div className="mt-10 flex flex-wrap gap-4">

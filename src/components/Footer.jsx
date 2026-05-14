@@ -2,18 +2,18 @@ import { Link } from "react-router-dom";
 import { publicEnv } from "../config/publicEnv.js";
 import { FOOTER_LEGAL_LINKS } from "../config/routes.js";
 import { assets } from "../config/assetsConfig.js";
-import { useI18n } from "../i18n.jsx";
+import { useTranslation } from "../i18n.jsx";
 
 export function Footer() {
-  const { t } = useI18n();
+  const { t } = useTranslation();
   return (
     <footer className="border-t border-slate-200 bg-slate-50 pb-10 pt-12 dark:border-slate-800 dark:bg-slate-900 sm:pb-12 sm:pt-16">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
           <div className="flex gap-4 sm:gap-6">
-            <img src={assets.logoFooter} alt="" className="h-12 w-auto shrink-0 object-contain sm:h-14" loading="lazy" />
+            <img src={assets.logoFooter} alt={t("brand.name")} className="h-12 w-auto shrink-0 object-contain sm:h-14" loading="lazy" />
             <div>
-              <p className="font-serif text-2xl text-slate-900 dark:text-slate-100 sm:text-3xl">Theottoni</p>
+              <p className="font-serif text-2xl text-slate-900 dark:text-slate-100 sm:text-3xl">{t("brand.name")}</p>
               <p className="mt-2 max-w-sm text-sm text-slate-600 dark:text-slate-400">{t("brand.tagline")}</p>
             </div>
           </div>
@@ -44,14 +44,14 @@ export function Footer() {
         </div>
         <p className="mt-8 text-xs text-slate-500 dark:text-slate-500 sm:mt-10">{t("footer.rights", { year: new Date().getFullYear() })}</p>
         <p className="mt-3 text-center text-[11px] leading-relaxed text-slate-500/80 transition-colors dark:text-slate-500/80 md:text-right md:text-xs hover:text-slate-600 dark:hover:text-slate-400">
-          Desenvolvido por{" "}
+          {t("footer.devPrefix")}{" "}
           <a
-            href="mailto:fabiano.freitas@gmail.com"
+            href={`mailto:${t("footer.devEmail")}`}
             className="font-medium text-slate-600 underline-offset-2 hover:text-amber-600 hover:underline dark:text-slate-400 dark:hover:text-amber-500"
           >
-            Fabiano Freitas
+            {t("footer.devName")}
           </a>{" "}
-          | fabiano.freitas@gmail.com
+          {t("footer.devSep")} {t("footer.devEmail")}
         </p>
       </div>
     </footer>

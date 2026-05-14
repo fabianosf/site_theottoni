@@ -5,7 +5,7 @@ import { publicEnv } from "../config/publicEnv.js";
 import { NAV_ROUTES } from "../config/routes.js";
 import { assets } from "../config/assetsConfig.js";
 import { isHomeScrollPath, scrollToHomeSection } from "../lib/scrollSection.js";
-import { useI18n, useTheme } from "../i18n.jsx";
+import { useTranslation, useTheme } from "../i18n.jsx";
 
 const navCls = ({ isActive }) =>
   `block rounded-lg px-3 py-2.5 text-sm font-medium transition sm:py-2 ${
@@ -15,7 +15,7 @@ const navCls = ({ isActive }) =>
   }`;
 
 export function Navbar() {
-  const { lang, setLang, t } = useI18n();
+  const { lang, setLang, t } = useTranslation();
   const { dark, toggle } = useTheme();
   const [open, setOpen] = useState(false);
   const loc = useLocation();
@@ -58,10 +58,10 @@ export function Navbar() {
             }
           }}
         >
-          <img src={assets.logo} alt="Theottoni" className="h-9 w-auto shrink-0 object-contain sm:h-10" loading="eager" decoding="async" />
+          <img src={assets.logo} alt={t("brand.name")} className="h-9 w-auto shrink-0 object-contain sm:h-10" loading="eager" decoding="async" />
           <span className="hidden min-w-0 flex-col leading-tight sm:flex">
             <span className="truncate font-serif text-lg tracking-tight text-slate-900 group-hover:text-amber-600 dark:text-slate-100 dark:group-hover:text-amber-400 sm:text-xl">
-              Theottoni
+              {t("brand.name")}
             </span>
             <span className="hidden text-[9px] font-medium uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400 sm:block sm:text-[10px] sm:tracking-[0.2em]">
               {t("nav.taglineSub")}

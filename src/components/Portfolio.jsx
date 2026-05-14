@@ -1,15 +1,15 @@
 import { assets } from "../config/assetsConfig.js";
-import { dict, useI18n } from "../i18n.jsx";
+import { dict, useTranslation } from "../i18n.jsx";
 
 export function Portfolio() {
-  const { lang } = useI18n();
+  const { lang, t } = useTranslation();
   const L = lang === "en" ? "en" : "pt";
   const copy = dict[L].portfolio;
   return (
     <section id="projetos" className="scroll-mt-24 border-t border-slate-200 bg-slate-50 py-12 dark:border-slate-800 dark:bg-slate-900 sm:scroll-mt-28 sm:py-16 md:py-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-amber-600 dark:text-amber-500 sm:text-xs sm:tracking-[0.35em]">{copy.eyebrow}</p>
-        <h2 className="mt-2 font-serif text-3xl text-slate-900 dark:text-slate-100 sm:mt-3 sm:text-4xl md:text-5xl">{copy.heading}</h2>
+        <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-amber-600 dark:text-amber-500 sm:text-xs sm:tracking-[0.35em]">{t("portfolio.eyebrow")}</p>
+        <h2 className="mt-2 font-serif text-3xl text-slate-900 dark:text-slate-100 sm:mt-3 sm:text-4xl md:text-5xl">{t("portfolio.heading")}</h2>
         <div className="mt-8 grid gap-6 sm:mt-10 sm:grid-cols-2 sm:gap-8 md:mt-12">
           {copy.items.map((item) => (
             <article key={item.id} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-950 sm:rounded-3xl">

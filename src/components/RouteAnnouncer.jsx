@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { seoFor, useI18n } from "../i18n.jsx";
+import { seoFor, useTranslation } from "../i18n.jsx";
 
 export function RouteAnnouncer() {
   const { pathname } = useLocation();
-  const { lang } = useI18n();
+  const { lang } = useTranslation();
   const [announce, setAnnounce] = useState("");
   useEffect(() => {
     const { title } = seoFor(pathname, lang);

@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useI18n } from "../i18n.jsx";
+import { useTranslation } from "../i18n.jsx";
 
 const gridTwo =
   "mt-8 grid max-w-5xl grid-cols-1 gap-6 sm:mt-10 sm:grid-cols-2 sm:gap-8 md:mt-12 md:gap-10 mx-auto w-full";
 
 export function Galeria({ items = [] }) {
-  const { t } = useI18n();
+  const { t } = useTranslation();
   const [open, setOpen] = useState(null);
   const close = useCallback(() => setOpen(null), []);
   const active = open != null && items[open] ? items[open] : null;

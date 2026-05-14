@@ -1,12 +1,12 @@
-import { useI18n } from "../i18n.jsx";
+import { useTranslation } from "../i18n.jsx";
 
 export function PaginaDetalhe({ heroSrc, title, subtitle, sourceUrl, children }) {
-  const { t } = useI18n();
+  const { t } = useTranslation();
   return (
     <div className="bg-white dark:bg-slate-950">
       {heroSrc ? (
         <div className="w-full overflow-hidden border-b border-slate-200 dark:border-slate-800">
-          <img src={heroSrc} alt="" className="max-h-[min(52vh,520px)] w-full object-cover object-center" loading="eager" decoding="async" />
+          <img src={heroSrc} alt={t("a11y.decorativeImage")} className="max-h-[min(52vh,520px)] w-full object-cover object-center" loading="eager" decoding="async" />
         </div>
       ) : null}
       <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-12">
