@@ -80,7 +80,6 @@ export const dict = {
     hero: {
       ctaServices: "Serviços",
       ctaContact: "Fale conosco",
-      originalLink: "Página original no domínio theottoni.com.br",
     },
     home: {
       aboutHeading: "Sobre nós",
@@ -249,7 +248,6 @@ export const dict = {
     hero: {
       ctaServices: "Services",
       ctaContact: "Contact us",
-      originalLink: "Original page at theottoni.com.br",
     },
     home: {
       aboutHeading: "About us",

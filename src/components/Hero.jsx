@@ -57,12 +57,6 @@ export function Hero() {
             <h2 className="font-serif text-2xl text-white">{urbanTitle}</h2>
             <p className="mt-2 text-xs font-semibold uppercase tracking-[0.25em] text-white/80">{urbanTypes}</p>
             <p className="mt-3 text-sm leading-relaxed text-white/90">{urbanTeaser}</p>
-            <a
-              href={urbanHydroSummary.href}
-              className="mt-4 inline-block text-sm font-semibold text-white underline decoration-white/60 underline-offset-4 hover:text-amber-200 hover:decoration-amber-200"
-            >
-              {t("hero.originalLink")}
-            </a>
           </div>
         </div>
       </div>
