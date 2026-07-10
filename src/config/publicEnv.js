@@ -1,5 +1,5 @@
-const tel = import.meta.env.VITE_APP_PHONE_TEL ?? "+5521979432464";
-const display = import.meta.env.VITE_APP_PHONE_DISPLAY ?? "(21) 97943-2464";
+const tel = import.meta.env.VITE_APP_PHONE_TEL ?? "+5521981822233";
+const display = import.meta.env.VITE_APP_PHONE_DISPLAY ?? "(21) 98182-2233";
 const primary = import.meta.env.VITE_APP_EMAIL_PRIMARY ?? "contato@theottoni.com.br";
 const secondary = import.meta.env.VITE_APP_EMAIL_COMERCIAL ?? "comercial@theottoni.com.br";
 
